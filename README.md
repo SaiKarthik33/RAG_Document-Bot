@@ -40,11 +40,15 @@ Create a `.env` file in the root directory and add your Google Gemini API key:
 `GEMINI_API_KEY="your_api_key_here"`
 
 **8. Example Queries**
-1. *[Replace with a question about your doc 1]*
-2. *[Replace with a question about your doc 2]*
-3. *[Replace with a cross-document question]*
-4. *[Replace with a specific detail question]*
-5. *[Replace with another question]*
+1. Recruitment Agencies in India
+
+2. Python Basics
+
+3. High-Level Architecture Diagram
+
+4. HR asks for the second highest salary from employees.
+
+5. Well found jobs
 
 **9. Known Limitations**
 * The bot currently only supports PDF formats; DOCX and TXT ingestion would require additional parsing logic.
