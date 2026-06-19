@@ -48,7 +48,6 @@ Create a `.env` file in the root directory and add your Google Gemini API key:
 
 4. HR asks for the second highest salary from employees.
 
-5. Well found jobs
 
 **9. Known Limitations**
 * The bot currently only supports PDF formats; DOCX and TXT ingestion would require additional parsing logic.
