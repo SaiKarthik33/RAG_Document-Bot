@@ -2,15 +2,16 @@ import streamlit as st
 import sys
 import os
 
-# Add the src folder to the path so we can import query.py
+# Ensure the script can find query.py in the same folder
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-# Try to import the query function (assuming you have a function named query_rag or similar in query.py)
-# If your function is named something else, change 'query_rag' below!
+# Import the exact function name you have in your query.py
 try:
-    from query import query_rag
-except ImportError:
-    st.error("Could not import the query function from query.py. Make sure you have a function that takes a question and returns an answer!")
+    from query import query_rag_pipeline
+    backend_connected = True
+except ImportError as e:
+    backend_connected = False
+    st.error(f"Critical Import Error: {e}")
 
 # --- UI Layout ---
 st.set_page_config(page_title="Document Q&A Bot", page_icon="📄")
@@ -20,20 +21,26 @@ st.markdown("Ask any question, and the bot will search your vector database to f
 st.divider()
 
 # --- Chat Interface ---
-question = st.text_input("Enter your question about the documents:", placeholder="e.g., What is the 3-month roadmap for Python?")
+if backend_connected:
+    question = st.text_input("Enter your question about the documents:", placeholder="e.g., What is the 3-month roadmap for Python?")
 
-if st.button("Generate Answer", type="primary"):
-    if question:
-        with st.spinner("Searching documents and generating answer..."):
-            try:
-                # Call your backend logic
-                answer = query_rag(question)
-                
-                # Display the result
-                st.success("Done!")
-                st.markdown("### Answer:")
-                st.write(answer)
-            except Exception as e:
-                st.error(f"An error occurred: {e}")
-    else:
-        st.warning("Please enter a question first.")
+    if st.button("Generate Answer", type="primary"):
+        if question:
+            with st.spinner("Searching documents and generating answer..."):
+                try:
+                    # Call your backend logic using the correct function name
+                    result = query_rag_pipeline(question)
+                    
+                    # Display the result
+                    st.success("Done!")
+                    st.markdown("### Answer:")
+                    st.write(result["answer"])
+                    
+                    st.markdown("### Citations:")
+                    for cite in result["citations"]:
+                        st.write(f"- {cite}")
+                        
+                except Exception as e:
+                    st.error(f"An error occurred during search: {e}")
+        else:
+            st.warning("Please enter a question first.")
